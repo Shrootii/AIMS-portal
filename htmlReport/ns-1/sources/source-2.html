@@ -1,0 +1,349 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > adminPortal</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example</a>
+</div>
+
+<h1>Coverage Summary for Class: adminPortal (org.example)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">adminPortal</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (3/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    47.4%
+  </span>
+  <span class="absValue">
+    (63/133)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example;
+&nbsp;
+&nbsp;import java.sql.*;
+&nbsp;import java.util.*;
+&nbsp;import java.io.*;
+&nbsp;
+<b class="fc">&nbsp;public class adminPortal {</b>
+&nbsp;
+&nbsp;
+&nbsp;    public static boolean semUpdate(){
+&nbsp;
+<b class="nc">&nbsp;        Scanner sn = new Scanner(System.in);</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Enter the current year: &quot;);</b>
+<b class="nc">&nbsp;        int year = sn.nextInt();</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Enter the current semester(A/B): &quot;);</b>
+<b class="nc">&nbsp;        String sem = sn.next();</b>
+&nbsp;
+<b class="nc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        try{
+<b class="nc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="nc">&nbsp;            String str = &quot;UPDATE calendar SET current_year = ? AND current_sem=?&quot;;</b>
+<b class="nc">&nbsp;            PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="nc">&nbsp;            stm.setInt(1,year);</b>
+<b class="nc">&nbsp;            stm.setString(2,sem);</b>
+&nbsp;
+<b class="nc">&nbsp;            stm.executeUpdate();</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void grad(){
+&nbsp;
+<b class="fc">&nbsp;        Scanner sn = new Scanner(System.in);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Enter the minimum core credits required: &quot;);</b>
+<b class="fc">&nbsp;        int core = sn.nextInt();</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Enter the minimum elective credits required: &quot;);</b>
+<b class="fc">&nbsp;        int elective = sn.nextInt();</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Enter the minimum BTP credits required: &quot;);</b>
+<b class="fc">&nbsp;        int btp = sn.nextInt();</b>
+&nbsp;
+<b class="fc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="fc">&nbsp;            String str = &quot;UPDATE graduation SET core_credits=?&quot;;</b>
+<b class="fc">&nbsp;            PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;            stm.setInt(1,core);</b>
+<b class="fc">&nbsp;            stm.executeUpdate();</b>
+<b class="fc">&nbsp;            String str1 = &quot;UPDATE graduation SET elective_credits=?&quot;;</b>
+<b class="fc">&nbsp;            PreparedStatement stm1 = c.prepareStatement(str1);</b>
+<b class="fc">&nbsp;            stm1.setInt(1,elective);</b>
+<b class="fc">&nbsp;            stm1.executeUpdate();</b>
+<b class="fc">&nbsp;            String str2 = &quot;UPDATE graduation SET btp_credits=?&quot;;</b>
+<b class="fc">&nbsp;            PreparedStatement stm2 = c.prepareStatement(str2);</b>
+<b class="fc">&nbsp;            stm2.setInt(1,core);</b>
+<b class="fc">&nbsp;            stm2.executeUpdate();</b>
+&nbsp;
+<b class="fc">&nbsp;            stm.close();</b>
+<b class="fc">&nbsp;            stm1.close();</b>
+<b class="fc">&nbsp;            stm2.close();</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Updated.&quot;);</b>
+&nbsp;        return;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void genScript(){
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Enter the student id.&quot;);</b>
+<b class="fc">&nbsp;        Scanner sc = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        String input = sc.next();</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            File file = new File(&quot;transcript.txt&quot;);</b>
+<b class="fc">&nbsp;            FileWriter fw = new FileWriter(file);</b>
+<b class="fc">&nbsp;            PrintWriter pw = new PrintWriter(fw);</b>
+&nbsp;
+<b class="fc">&nbsp;            Connection c = null;</b>
+&nbsp;
+&nbsp;            try{
+<b class="fc">&nbsp;                c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                        &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="fc">&nbsp;                String str = &quot;SELECT * FROM student_record WHERE id=?&quot;;</b>
+<b class="fc">&nbsp;                PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;                stm.setString(1,input);</b>
+<b class="fc">&nbsp;                ResultSet rs = stm.executeQuery();</b>
+&nbsp;
+<b class="fc">&nbsp;                String str1 = &quot;SELECT * FROM all_enrollments WHERE student_id=?&quot;;</b>
+<b class="fc">&nbsp;                PreparedStatement stm1 = c.prepareStatement(str1);</b>
+<b class="fc">&nbsp;                stm1.setString(1,input);</b>
+<b class="fc">&nbsp;                ResultSet rs1 = stm1.executeQuery();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;                if(rs.next()){</b>
+<b class="fc">&nbsp;                    pw.write(&quot;Transcript of &quot; + rs.getString(&quot;name&quot;) + &quot;\n&quot;);</b>
+<b class="fc">&nbsp;                    pw.write(&quot;ID: &quot; + rs.getString(&quot;id&quot;) + &quot;\n&quot;);</b>
+<b class="fc">&nbsp;                    pw.write(&quot;BATCH: &quot; + rs.getString(&quot;batch&quot;) + &quot;\n&quot;);</b>
+<b class="fc">&nbsp;                    pw.write(&quot;BRANCH: &quot; + rs.getString(&quot;branch&quot;) + &quot;\n&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                    pw.write(&quot;\n\n&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                    pw.write(&quot;Code\tCredits\tGrade\tType\n\n&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                    while(rs1.next()){</b>
+<b class="fc">&nbsp;                        String code = rs1.getString(&quot;course_code&quot;);</b>
+<b class="fc">&nbsp;                        String type = rs1.getString(&quot;course_type&quot;);</b>
+<b class="fc">&nbsp;                        String grade = rs1.getString(&quot;grade&quot;);</b>
+<b class="fc">&nbsp;                        int creds = rs1.getInt(&quot;credits&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                        pw.write(code + &quot;\t&quot;+creds+&quot;\t&quot;+grade+&quot;\t&quot;+type+&quot;\n&quot;);</b>
+<b class="fc">&nbsp;                    }</b>
+&nbsp;
+&nbsp;                }
+&nbsp;
+<b class="fc">&nbsp;                rs1.close();</b>
+<b class="fc">&nbsp;                rs.close();</b>
+<b class="fc">&nbsp;                stm.close();</b>
+<b class="fc">&nbsp;                stm1.close();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;            } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;                System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;                System.exit(0);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;An error occurred.&quot;);</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void portal(String username) {
+&nbsp;
+&nbsp;        // setting up connection to database
+<b class="nc">&nbsp;        try (Connection datacon = DriverManager.getConnection(</b>
+&nbsp;                &quot;jdbc:postgresql://127.0.0.1:5432/aims&quot;, &quot;postgres&quot;, &quot;shruti2709&quot;)) {
+<b class="nc">&nbsp;        } catch (SQLException e) {</b>
+<b class="nc">&nbsp;            System.err.format(&quot;SQL State: %s\n%s&quot;, e.getSQLState(), e.getMessage());</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;\nWELCOME ADMIN!&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Enter your choice: &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;1. Update semester. &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;2. Check grades. &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;3. Generate transcript. &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;4. Update profile. &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;5. Set graduation credit requirements. &quot;);</b>
+<b class="nc">&nbsp;        if(username.equals(&quot;dean@admin&quot;))System.out.println(&quot;6. Edit course catalog. &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;7. Logout. &quot;);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;        //registerCourse();
+<b class="nc">&nbsp;        Scanner sc = new Scanner(System.in);</b>
+<b class="nc">&nbsp;        int ans = sc.nextInt();</b>
+&nbsp;
+<b class="nc">&nbsp;        switch(ans){</b>
+&nbsp;
+&nbsp;            //updating the semester in calendar
+&nbsp;            case 1:
+<b class="nc">&nbsp;                semUpdate();</b>
+<b class="nc">&nbsp;                portal(username);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;
+&nbsp;            //Editing course catalog
+&nbsp;            case 6:
+<b class="nc">&nbsp;                adminCC.editCatalog();</b>
+<b class="nc">&nbsp;                portal(username);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;
+&nbsp;            //checking grades of all students
+&nbsp;            //grades according to a course
+&nbsp;            case 2:
+&nbsp;
+<b class="nc">&nbsp;                System.out.println(&quot;Please enter the course code you want to view grades of.\n&quot;);</b>
+<b class="nc">&nbsp;                String input = sc.next();</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Please enter the semester (format - 2020A/2020B)\n&quot;);</b>
+<b class="nc">&nbsp;                String sem = sc.next();</b>
+<b class="nc">&nbsp;                grades.viewGrades(input, 2,sem);</b>
+<b class="nc">&nbsp;                portal(username);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;            //Generate transcript
+&nbsp;            case 3:
+<b class="nc">&nbsp;                genScript();</b>
+<b class="nc">&nbsp;                portal(username);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;            //Update profile
+&nbsp;            case 4:
+<b class="nc">&nbsp;                editRecord.edit(username,3);</b>
+<b class="nc">&nbsp;                portal(username);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;            //Graduation credit requirements
+&nbsp;            case 5:
+<b class="nc">&nbsp;                grad();</b>
+<b class="nc">&nbsp;                portal(username);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;
+&nbsp;            //logging out
+&nbsp;            case 7:
+<b class="nc">&nbsp;                System.out.println(&quot;You have logged out.&quot;);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;
+&nbsp;            default:
+<b class="nc">&nbsp;                System.out.println(&quot;*****INVALID INPUT. TRY AGAIN.*****&quot;);</b>
+<b class="nc">&nbsp;                portal(username);</b>
+&nbsp;                break;
+&nbsp;        }
+&nbsp;
+&nbsp;        //sc.close();
+&nbsp;        return;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-10 23:00</div>
+</div>
+</body>
+</html>

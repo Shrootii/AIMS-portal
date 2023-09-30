@@ -1,0 +1,226 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > deregisterCourse</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example</a>
+</div>
+
+<h1>Coverage Summary for Class: deregisterCourse (org.example)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">deregisterCourse</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (54/63)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example;
+&nbsp;
+&nbsp;import java.sql.*;
+&nbsp;import java.util.*;
+&nbsp;
+<b class="fc">&nbsp;public class deregisterCourse {</b>
+&nbsp;
+&nbsp;    public static boolean viewEnrollments(String username){
+&nbsp;
+&nbsp;        //the current student enrollments will be displayed
+<b class="fc">&nbsp;        System.out.println(</b>
+&nbsp;                &quot;\nFollowing are the current course enrollments.\n&quot;);
+&nbsp;
+<b class="fc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="fc">&nbsp;            String str = &quot;SELECT * FROM current_enrollments WHERE student_id=?&quot;;</b>
+<b class="fc">&nbsp;            PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;            stm.setString(1,username);</b>
+&nbsp;
+<b class="fc">&nbsp;            ResultSet rs = stm.executeQuery();</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.println(&quot;code\tcredits\ttype&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            while ( rs.next() ) {</b>
+<b class="fc">&nbsp;                String code = rs.getString(&quot;course_code&quot;);</b>
+<b class="fc">&nbsp;                int creds = rs.getInt(&quot;credits&quot;);</b>
+<b class="fc">&nbsp;                String type = rs.getString(&quot;course_type&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                System.out.println(code+&quot;\t&quot;+creds+&quot;\t&quot;+type);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.println(&quot;\n&quot;);</b>
+<b class="fc">&nbsp;            rs.close();</b>
+<b class="fc">&nbsp;            stm.close();</b>
+<b class="fc">&nbsp;            c.close();</b>
+<b class="nc">&nbsp;        } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void deregister(String username){
+&nbsp;
+<b class="fc">&nbsp;        viewEnrollments(username);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Enter the course code you want to deregister.&quot;);</b>
+<b class="fc">&nbsp;        Scanner sc = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        String input = sc.next();</b>
+&nbsp;
+<b class="fc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        //checking if correct input code is taken
+&nbsp;        try{
+<b class="fc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="fc">&nbsp;            String str = &quot;SELECT * FROM current_enrollments WHERE student_id=?&quot;;</b>
+<b class="fc">&nbsp;            PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;            stm.setString(1,username);</b>
+&nbsp;
+<b class="fc">&nbsp;            ResultSet rs = stm.executeQuery();</b>
+&nbsp;
+<b class="fc">&nbsp;            int flag=0;</b>
+&nbsp;
+<b class="fc">&nbsp;            while ( rs.next() ) {</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;                String code = rs.getString(&quot;course_code&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                if(input.equals(code)){</b>
+<b class="fc">&nbsp;                    flag=1;</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="fc">&nbsp;            if(flag==0){</b>
+<b class="nc">&nbsp;                System.out.println(&quot;*****Course not currently enrolled. Try again.*****\n&quot;);</b>
+<b class="nc">&nbsp;                deregister(username);</b>
+&nbsp;            }
+&nbsp;            else{
+<b class="fc">&nbsp;                String sql = &quot;DELETE FROM all_enrollments WHERE student_id = ? AND course_code =?&quot;;</b>
+<b class="fc">&nbsp;                PreparedStatement stmt = c.prepareStatement(sql);</b>
+<b class="fc">&nbsp;                stmt.setString(1,username);</b>
+<b class="fc">&nbsp;                stmt.setString(2,input);</b>
+&nbsp;
+<b class="fc">&nbsp;                stmt.executeUpdate();</b>
+&nbsp;
+<b class="fc">&nbsp;                stmt.close();</b>
+&nbsp;
+<b class="fc">&nbsp;                String sql1 = &quot;DELETE FROM current_enrollments WHERE student_id = ? AND course_code =?&quot;;</b>
+<b class="fc">&nbsp;                PreparedStatement stmt1 = c.prepareStatement(sql1);</b>
+<b class="fc">&nbsp;                stmt1.setString(1,username);</b>
+<b class="fc">&nbsp;                stmt1.setString(2,input);</b>
+&nbsp;
+<b class="fc">&nbsp;                stmt1.executeUpdate();</b>
+&nbsp;
+<b class="fc">&nbsp;                stmt1.close();</b>
+&nbsp;
+<b class="fc">&nbsp;                System.out.println(&quot;Successfully Unenrolled &quot; + input+&quot;.&quot;);</b>
+&nbsp;
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            rs.close();</b>
+<b class="fc">&nbsp;            stm.close();</b>
+&nbsp;
+&nbsp;            //deleting the course from all enrollments and current enrollments
+<b class="nc">&nbsp;        }catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        return;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-10 23:00</div>
+</div>
+</body>
+</html>

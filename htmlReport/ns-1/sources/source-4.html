@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > editRecord</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example</a>
+</div>
+
+<h1>Coverage Summary for Class: editRecord (org.example)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">editRecord</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    43.1%
+  </span>
+  <span class="absValue">
+    (25/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example;
+&nbsp;
+&nbsp;import java.sql.*;
+&nbsp;import java.util.*;
+&nbsp;
+<b class="fc">&nbsp;public class editRecord {</b>
+&nbsp;
+&nbsp;    public static boolean edit(String username, int type){
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Enter the field you would like to edit.&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;1.Name\n2.Address\n3.Contact\n&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Scanner sc = new Scanner (System.in);</b>
+<b class="fc">&nbsp;        int input = sc.nextInt();</b>
+&nbsp;
+<b class="fc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            if(input == 1){</b>
+&nbsp;
+<b class="nc">&nbsp;                System.out.println(&quot;Enter new name.&quot;);</b>
+<b class="nc">&nbsp;                sc.nextLine();</b>
+<b class="nc">&nbsp;                String name = sc.nextLine();</b>
+<b class="nc">&nbsp;                String str=&quot;&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;                if (type==1)str = &quot;UPDATE student_record SET name = ? WHERE id = ?&quot;;</b>
+<b class="nc">&nbsp;                else if(type==2) str = &quot;UPDATE faculty_record SET name = ? WHERE id = ?&quot; ;</b>
+<b class="nc">&nbsp;                else if(type==3) str = &quot;UPDATE admin_record SET name = ? WHERE id = ?&quot;;</b>
+<b class="nc">&nbsp;                PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="nc">&nbsp;                stm.setString(1,name);</b>
+<b class="nc">&nbsp;                stm.setString(2,username);</b>
+&nbsp;
+<b class="nc">&nbsp;                stm.executeUpdate();</b>
+<b class="nc">&nbsp;                System.out.println(name);</b>
+&nbsp;
+<b class="nc">&nbsp;                System.out.println(&quot;Name updated.&quot;);</b>
+&nbsp;                //stm.close();
+<b class="nc">&nbsp;            }</b>
+<b class="fc">&nbsp;            else if(input == 2){</b>
+&nbsp;
+<b class="fc">&nbsp;                System.out.println(&quot;Enter new address.&quot;);</b>
+<b class="fc">&nbsp;                sc.nextLine();</b>
+<b class="fc">&nbsp;                String adrs = sc.nextLine();</b>
+<b class="fc">&nbsp;                String str=&quot;&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;                if (type==1) str = &quot;UPDATE student_record SET address = ? WHERE id = ?&quot;;</b>
+<b class="fc">&nbsp;                else if(type==2) str = &quot;UPDATE faculty_record SET address = ? WHERE id = ?&quot;;</b>
+<b class="nc">&nbsp;                else if(type==3) str = &quot;UPDATE admin_record SET address = ? WHERE id = ?&quot;;</b>
+<b class="fc">&nbsp;                PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;                stm.setString(1,adrs);</b>
+<b class="fc">&nbsp;                stm.setString(2,username);</b>
+&nbsp;
+<b class="fc">&nbsp;                stm.executeUpdate();</b>
+&nbsp;
+<b class="fc">&nbsp;                System.out.println(&quot;Address updated.&quot;);</b>
+<b class="fc">&nbsp;                stm.close();</b>
+<b class="fc">&nbsp;            }</b>
+<b class="nc">&nbsp;            else if(input == 3){</b>
+&nbsp;
+<b class="nc">&nbsp;                System.out.println(&quot;Enter new contact.&quot;);</b>
+<b class="nc">&nbsp;                String num = sc.next();</b>
+<b class="nc">&nbsp;                String str = &quot;&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;                if(type==1) str = &quot;UPDATE student_record SET contact = ? WHERE id = ?&quot;;</b>
+<b class="nc">&nbsp;                else if(type==2) str = &quot;UPDATE faculty_record SET contact = ? WHERE id = ?&quot;;</b>
+<b class="nc">&nbsp;                else if(type==3) str = &quot;UPDATE admin_record SET contact = ? WHERE id = ?&quot;;</b>
+<b class="nc">&nbsp;                PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="nc">&nbsp;                stm.setString(1,num);</b>
+<b class="nc">&nbsp;                stm.setString(2,username);</b>
+&nbsp;
+<b class="nc">&nbsp;                stm.executeUpdate();</b>
+&nbsp;
+<b class="nc">&nbsp;                System.out.println(&quot;Contact number updated.&quot;);</b>
+<b class="nc">&nbsp;                stm.close();</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            else {
+<b class="nc">&nbsp;                System.out.println(&quot;*****INVALID INPUT.*****&quot;);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            c.close();</b>
+<b class="nc">&nbsp;        } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-10 23:00</div>
+</div>
+</body>
+</html>

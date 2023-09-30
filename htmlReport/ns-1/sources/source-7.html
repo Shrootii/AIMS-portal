@@ -1,0 +1,241 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > grades</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example</a>
+</div>
+
+<h1>Coverage Summary for Class: grades (org.example)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">grades</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76.7%
+  </span>
+  <span class="absValue">
+    (56/73)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example;
+&nbsp;
+&nbsp;import java.sql.*;
+&nbsp;
+<b class="fc">&nbsp;public class grades {</b>
+&nbsp;
+&nbsp;    public static boolean viewGrades(String username, int type,String sem){
+&nbsp;
+&nbsp;        //displays the grades of all courses completed
+&nbsp;        //username = student id when student
+&nbsp;        //username - course code  when faculty
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="fc">&nbsp;            String str = &quot;&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;            if(type==1) str = &quot;SELECT * FROM all_enrollments WHERE student_id=? AND sem=?&quot;;</b>
+<b class="nc">&nbsp;            else if(type==2) {</b>
+<b class="nc">&nbsp;                str = &quot;SELECT * FROM all_enrollments WHERE course_code=? AND sem=?&quot;;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;            stm.setString(1,username);</b>
+<b class="fc">&nbsp;            stm.setString(2,sem);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            ResultSet rs = stm.executeQuery();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            System.out.println(&quot;student id\t\t\t\t\tcode\tcredits\tgrades&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            while ( rs.next()) {</b>
+&nbsp;
+<b class="fc">&nbsp;                String sname = rs.getString(&quot;student_id&quot;);</b>
+<b class="fc">&nbsp;                String code = rs.getString(&quot;course_code&quot;);</b>
+<b class="fc">&nbsp;                int creds = rs.getInt(&quot;credits&quot;);</b>
+<b class="fc">&nbsp;                String grade = rs.getString(&quot;grade&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                if(grade!=null)System.out.println(sname+ &quot;\t&quot;+code+&quot;\t&quot;+creds+&quot;\t&quot;+grade);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.println(&quot;\n&quot;);</b>
+<b class="fc">&nbsp;            rs.close();</b>
+<b class="fc">&nbsp;            stm.close();</b>
+<b class="fc">&nbsp;            c.close();</b>
+<b class="nc">&nbsp;        } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public static double calculateCg(String username){
+&nbsp;
+<b class="fc">&nbsp;        int points =0;</b>
+<b class="fc">&nbsp;        double cgpa =0;</b>
+<b class="fc">&nbsp;        int total_creds = 0;</b>
+&nbsp;        //calculates the current CGPA of student
+&nbsp;
+<b class="fc">&nbsp;        Connection c = null;</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            c = DriverManager.getConnection(&quot;jdbc:postgresql://localhost:5432/aims&quot;,</b>
+&nbsp;                    &quot;postgres&quot;, &quot;shruti2709&quot;);
+&nbsp;
+<b class="fc">&nbsp;            String str = &quot;SELECT * FROM all_enrollments WHERE student_id=?&quot;;</b>
+<b class="fc">&nbsp;            PreparedStatement stm = c.prepareStatement(str);</b>
+<b class="fc">&nbsp;            stm.setString(1,username);</b>
+&nbsp;
+<b class="fc">&nbsp;            ResultSet rs = stm.executeQuery();</b>
+&nbsp;
+&nbsp;            //System.out.println(&quot;code\tcredits\tgrades&quot;);
+&nbsp;
+<b class="fc">&nbsp;            while ( rs.next()) {</b>
+&nbsp;                //String code = rs.getString(&quot;course_code&quot;);
+<b class="fc">&nbsp;                int creds = rs.getInt(&quot;credits&quot;);</b>
+<b class="fc">&nbsp;                String grade = rs.getString(&quot;grade&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                if(grade==null || grade == &quot;F&quot;){</b>
+&nbsp;                    //System.out.println(code+&quot;\t&quot;+creds+&quot;\t&quot;+grade);
+<b class="nc">&nbsp;                    continue;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;A&quot;)){</b>
+<b class="fc">&nbsp;                    points += 10 * creds;</b>
+<b class="fc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;A-&quot;)){</b>
+<b class="nc">&nbsp;                    points += 9 * creds;</b>
+<b class="nc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;B&quot;)){</b>
+<b class="fc">&nbsp;                    points += 8 * creds;</b>
+<b class="fc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;B-&quot;)){</b>
+<b class="nc">&nbsp;                    points += 7 * creds;</b>
+<b class="nc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;C&quot;)){</b>
+<b class="fc">&nbsp;                    points += 6 * creds;</b>
+<b class="fc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;C-&quot;)){</b>
+<b class="nc">&nbsp;                    points += 5 * creds;</b>
+<b class="nc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                else if(grade.equals(&quot;D&quot;)){</b>
+<b class="nc">&nbsp;                    points += 4 * creds;</b>
+<b class="nc">&nbsp;                    total_creds += creds;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+<b class="fc">&nbsp;            if(total_creds!=0)cgpa = points/total_creds;</b>
+&nbsp;            //System.out.println(cgpa + &quot; &quot;+ total_creds+ &quot; &quot;+points);
+&nbsp;
+&nbsp;
+&nbsp;            //System.out.println(&quot;Current CGPA: &quot; + cgpa);
+<b class="fc">&nbsp;            rs.close();</b>
+<b class="fc">&nbsp;            stm.close();</b>
+<b class="fc">&nbsp;            c.close();</b>
+<b class="nc">&nbsp;        } catch ( Exception e ) {</b>
+<b class="nc">&nbsp;            System.err.println( e.getClass().getName()+&quot;: &quot;+ e.getMessage() );</b>
+<b class="nc">&nbsp;            System.exit(0);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return cgpa;</b>
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-10 23:00</div>
+</div>
+</body>
+</html>
